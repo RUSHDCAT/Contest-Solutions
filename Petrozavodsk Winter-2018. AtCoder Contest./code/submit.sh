@@ -1,0 +1,25 @@
+/opt/tiger/ss_bin/doas /opt/tiger/spark_deploy/spark-stable/bin/spark-submit
+--name test_conf_20201106
+--master yarn
+--deploy-mode cluster
+--queue root.caijing.train
+--class com.bytedance.caijing.magellan.command_line.pipeline.SimplePipeline
+--conf spark.shuffle.hdfs.enabled=true
+--conf spark.shuffle.io.maxRetries=1
+--conf spark.shuffle.io.retryWait=0
+--conf spark.network.timeout=1200
+--conf spark.dynamicAllocation.maxExecutors=50
+--conf spark.executor.instances=50
+--conf spark.executor.memory=12g
+--conf spark.executor.cores=4
+--conf spark.executor.memoryOverhead=4g
+--conf spark.driver.memory=16g
+--conf spark.driver.cores=8
+--conf spark.driver.memoryOverhead=8g
+--conf spark.yarn.am.memory=8g
+--conf spark.yarn.am.cores=4
+--conf spark.vcore.boost.ratio=2
+--conf spark.driver.maxResultSize=4g
+--files test_conf.yaml /opt/resource/magellan-pipeline.jar
+--conf test_conf.yaml
+--today 20201107 >test_conf_20201107.log 2>&1 &
