@@ -74,21 +74,23 @@ int hungary(ll n) {
 void print(vector< pair<int,ll> > v){
 	vector<vector<int> > ans;
 	for(int i=1;i<60;i++) ans.push_back({i-(i==1),i-(i==1)});
-	for(auto i: v){
+    vector<int> res;
+	for(auto i : v){
 		if(i.second==1){
-			ans.push_back({i.first});
+            res.push_back(i.first);
 		}
 		else{
 			assert(i.first==0);
 			vector<int> a;
 			ll x = i.second;
-			for(int i=0;i<60;i++){
-				if(x>>i&1) a.push_back(i==0 ? 0 : i+1);
+			for(int y=0;y<60;y++){
+				if(x>>y&1) a.push_back(y==0 ? 0 : y+1);
 			}
-			ans.push_back(a);
+		    for (auto val: a) res.push_back(val);
 		}
 	}
-	cout<<ans.size()<<endl;
+    ans.push_back(res);
+	cout<<ans.size() + 1<<endl;
 	for(auto i: ans){
 		cout<<i.size()<<" ";
 		for(int j: i) cout<<j<<' '; cout<<endl;
@@ -116,6 +118,13 @@ int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
     cin >> n;
+    if (n <= 4) {
+        cout << "2" << endl;
+        cout << n+1;
+        for (int i=1;i<=n+1;i++) cout << " 1";
+        cout << endl; return 0;
+    }
+
 
     ll pos = 1; int cnt = 0;
     for (ll x = n; x >= 1; x --) {
@@ -127,19 +136,21 @@ int main() {
     	}
     }
 
-    ll cnt_ = n - pos;
+    ll cnt_ = n - pos + 1;
+    //printf("# %d\n", pos);
     for (ll i = 1; i <= n - pos; i ++) add(i);
-    ll rem = n - 2 * cnt_;
+    ll rem = n + 1 - 2 * cnt_;
 	
 	vector< pair<int,ll> > vec;
+    vec.push_back(make_pair(1, 1));
 	for (auto x: res) vec.push_back(make_pair(x, 1));
 	if (rem > 0) vec.push_back(make_pair(0, rem));
 	reverse(res.begin(), res.end());
 	for (auto x: res) vec.push_back(make_pair(x, 1));
-	/*
+	vec.push_back(make_pair(1,1));
 	for (auto p: vec) {
 		printf("# %lld %lld\n", p.first, p.second);
 	}
-	*/
+	
 	print(vec);
 }
